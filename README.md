@@ -1,4 +1,4 @@
-Report
+# Report
 
 This document provides a fully detailed explanation of how ESP-IDF and the Espressif fork of QEMU were installed and built from source on an Ubuntu 24.04 system running inside VirtualBox. The explanations cover every step, starting from a basic conceptual level, and include the exact reasons behind each error encountered. The goal is to create a complete, transparent reference that shows how QEMU ESP32 emulation was brought up correctly despite dependency issues and mismatches that are common in newer Linux distributions.
 
