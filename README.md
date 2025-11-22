@@ -56,26 +56,25 @@ The work described in this document adopts that same philosophy. It focuses on c
 
 ## 2.1 Objective
 
-The objective is to create a fully functional ESP32 emulation system using the ESP-IDF toolchain and a custom-built QEMU instance that supports the Xtensa architecture. The environment must successfully compile and execute ESP32 firmware examples such as LED blinking and basic temperature sensor simulation.
+The objective is to set up a complete emulation environment for ESP32 microcontrollers using QEMU and the ESP-IDF toolchain. The environment must be fully functional, capable of compiling, flashing, and executing ESP32 programs entirely in software. It should support demonstration programs such as an LED blink example and a basic temperature sensor simulation executed inside QEMU.
 
 ## 2.2 Scope of Work
 
-The work includes installing ESP-IDF, setting up necessary compilers and Python tooling, compiling the ESP32-enabled QEMU from source, resolving build errors, and verifying execution of ESP-IDF programs. The environment must integrate smoothly with the Yaksh platform to perform automated testing of student submissions without requiring ESP32 hardware.
-
+The scope includes installing ESP-IDF, fetching all required tools, building QEMU with Xtensa support, resolving compilation errors, and ensuring successful execution of emulated firmware. The environment must also integrate with the Yaksh evaluation platform so that ESP32 assignments can be evaluated automatically through the emulator without requiring physical boards. The final setup should be reliable enough to support education, programming labs, and experiment-driven learning.
 
 # 3 ESP-IDF and QEMU Fundamentals
 
 ## 3.1 Overview of ESP-IDF
 
-ESP-IDF is the official development framework provided by Espressif for ESP32 microcontrollers. It provides a complete build system with CMake, Python tooling, FreeRTOS kernel, networking stacks, peripheral APIs, and example applications. It abstracts complex low-level hardware operations, while still allowing full control for tasks requiring direct hardware manipulation.
+The ESP-IDF (Espressif IoT Development Framework) is the official software development kit for ESP32-series microcontrollers. It provides the full stack required to build embedded applications, including the FreeRTOS kernel, peripheral drivers, Wi-Fi and Bluetooth stacks, OTA support, flash memory handling, build scripts, Python-based tooling, and a complete project structure. ESP-IDF abstracts complex hardware features so that developers can focus on application logic while still having low-level access whenever needed.
 
 ## 3.2 Components and Capabilities of ESP-IDF
 
-ESP-IDF offers board support packages, GPIO control, ADC/DAC drivers, timers, UART/SPI/I2C communication, Wi-Fi and Bluetooth stacks, and debugging tools. The tooling includes idf.py for project creation, configuration, build, flash, and monitoring. These capabilities allow developers to create scalable embedded applications and test them reliably.
+ESP-IDF includes a build system based on CMake and Python, with integrated configuration tools, device-specific compilers, linker scripts, and IDF-monitor utilities. The framework provides APIs for GPIO, ADC, timers, UART, SPI, I2C, PWM, tasks, queues, and other RTOS features. It also contains example projects for LEDs, sensors, networking, and peripheral testing. These components form the foundation for building and running ESP32 firmware both on real hardware and in an emulation environment such as QEMU.
 
 ## 3.3 Overview of QEMU and ESP32 Emulation
 
-QEMU is a system emulator capable of reproducing complete CPU architectures. Espressif maintains a fork of QEMU that implements the Xtensa instruction set and ESP32-specific peripherals. With this, ESP-IDF firmware can run entirely in software, making it ideal for continuous integration environments, automated assignment grading, and experimentation without physical devices.
+QEMU is a machine emulator capable of running full system images for various CPU architectures through dynamic binary translation. Espressif maintains a customized fork of QEMU that supports the Xtensa instruction set used by ESP32 chips. This modified version emulates flash memory, interrupts, peripherals, memory-mapped I/O, timers, and general CPU behavior. Building QEMU for ESP32 enables firmware execution without a physical development board, making it useful for continuous integration, automated testing, and code evaluation systems.
 
 ## 3.4 Yaksh Platform Requirements and Prerequisite Checks
 
