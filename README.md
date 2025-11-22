@@ -1,15 +1,16 @@
 # Report
 
-# Table of Contents  
-1. Introduction  
+## Table of Contents  
+
+####1. Introduction  
  1.1 FOSSEE and the Role of Open-Source Tools  
  1.2 Open-Source Ecosystem for Current and Future Engineering Education
    
-2. Problem Statement  
+####2. Problem Statement  
  2.1 Objective  
  2.2 Scope of Work
    
-3. ESP-IDF and QEMU Fundamentals  
+####3. ESP-IDF and QEMU Fundamentals  
  3.1 Overview of ESP-IDF  
  3.2 Components and Capabilities of ESP-IDF  
  3.3 Overview of QEMU and ESP32 Emulation  
