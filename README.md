@@ -2,21 +2,21 @@
 
 ## Table of Contents  
 
-####1. Introduction  
+#### 1. Introduction  
  1.1 FOSSEE and the Role of Open-Source Tools  
  1.2 Open-Source Ecosystem for Current and Future Engineering Education
    
-####2. Problem Statement  
+#### 2. Problem Statement  
  2.1 Objective  
  2.2 Scope of Work
    
-####3. ESP-IDF and QEMU Fundamentals  
+#### 3. ESP-IDF and QEMU Fundamentals  
  3.1 Overview of ESP-IDF  
  3.2 Components and Capabilities of ESP-IDF  
  3.3 Overview of QEMU and ESP32 Emulation  
  3.4 Yaksh Platform Requirements and Prerequisite Checks
    
-4. ESP32 Development Environment Setup  
+#### 4. ESP32 Development Environment Setup  
  4.1 Installing ESP-IDF  
  4.2 Installing ESP-IDF Tools  
  4.3 Building QEMU for ESP32 from Source
