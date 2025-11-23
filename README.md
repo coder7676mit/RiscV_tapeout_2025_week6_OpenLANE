@@ -2,45 +2,45 @@
 
 ## Table of Contents  
 
-#### 1. Introduction  
+### 1. Introduction  
  1.1 FOSSEE and the Role of Open-Source Tools  
  1.2 Open-Source Ecosystem for Current and Future Engineering Education
    
-#### 2. Problem Statement  
+### 2. Problem Statement  
  2.1 Objective  
  2.2 Scope of Work
    
-#### 3. ESP-IDF and QEMU Fundamentals  
+### 3. ESP-IDF and QEMU Fundamentals  
  3.1 Overview of ESP-IDF  
  3.2 Components and Capabilities of ESP-IDF  
  3.3 Overview of QEMU and ESP32 Emulation  
  3.4 Yaksh Platform Requirements and Prerequisite Checks
    
-#### 4. ESP32 Development Environment Setup  
+### 4. ESP32 Development Environment Setup  
  4.1 Installing ESP-IDF  
  4.2 Installing ESP-IDF Tools  
  4.3 Building QEMU for ESP32 from Source
    
-5. Verification of Installation  
+### 5. Verification of Installation  
  5.1 Confirming ESP-IDF Installation  
  5.2 Confirming QEMU Installation  
  5.3 Running Smoke Tests
 
-6. Compilation Issues and Their Resolution  
+### 6. Compilation Issues and Their Resolution  
  6.1 Environment-Related Errors  
  6.2 Missing Libraries and Header Files  
  6.3 Reconfiguration and Successful Build
    
-7. Running LED and Temperature Sensor Programs  
+### 7. Running LED and Temperature Sensor Programs  
  7.1 Building and Running the LED Example  
  7.2 Building and Running the Temperature Sensor Example  
  7.3 Output Verification
    
-8. Integration with the Yaksh Automated Evaluation System  
+### 8. Integration with the Yaksh Automated Evaluation System  
  8.1 How QEMU Enables Automated Grading  
  8.2 Workflow for Evaluating ESP32 Assignments
    
-9. Future Scope  
+### 9. Future Scope  
  9.1 Advanced Experiments and Projects  
  9.2 Research and Development Opportunities in Open-Source Toolchains  
 
