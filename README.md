@@ -204,7 +204,339 @@ cd ~/qemu
 cd ~/qemu/build
 ninja -j$(nproc)
 ```
+---
 
+# 5. Verification: Confirming All Installations Are Working Correctly
+
+Before proceeding with projects, it is important to verify that ESP-IDF, QEMU, toolchains, Python environment, and supporting libraries are correctly installed.  
+Running the following commands ensures the entire development and emulation environment is functional.
+
+---
+
+## Verify ESP-IDF Environment and toolchain
+This confirms that the ESP-IDF environment variables are active, the Python environment is detected, and all required tools are located.
+
+```bash
+cd ~/esp/esp-idf
+source export.sh
+idf.py --version
+
+xtensa-esp32-elf-gcc --version
+```
+
+## Verifying QEMU environment
+``bash
+qemu-system-xtensa --version
+```
+
+---
+
+
+# 7.
+
+## Creating a demo project
+
+### Initializing the ESP-IDF Environment Before Creating Projects
+
+Before creating or building any ESP-IDF project, the ESP-IDF environment must be activated. ESP-IDF relies on a Python virtual environment, toolchain binaries, CMake helpers, and internal scripts that are loaded through the `export.sh` file. Without sourcing this script, commands like `idf.py`, the Xtensa toolchain, and ESP-IDF’s QEMU integration will not function correctly.
+
+To initialize the environment, the following command was executed from inside the ESP-IDF installation directory:
+
+```bash
+cd ~/esp/esp-idf
+source export.sh
+```
+
+### Creating the First ESP-IDF Project Inside the Workspace
+
+After initializing the ESP-IDF environment, a dedicated directory was prepared to keep all firmware projects organized. A `projects` folder was created inside the main ESP workspace, and the Hello World project was generated there. These steps ensure a clean structure and prevent mixing project files with ESP-IDF’s internal repository.
+
+The following commands were executed:
+
+```bash
+cd ~/esp/projects
+mkdir hello
+idf.py create-project hello_world
+```
+Once the project directory was created, the next step was to configure it for the ESP32 architecture. This is required before any build action, as ESP-IDF supports multiple chips and must know which target to compile for. The configuration was applied using:
+```bash
+cd ~/esp/projects/hello_world
+idf.py set-target esp32
+```
+#### Edit the hello_world.c file which was created
+
+```bash
+
+```
+
+Then build the project using
+
+``bash
+idf.py build
+
+//Once this is done succesfully, run the project and view the output on IDF monitor
+
+idf.py qemu monitor
+``
+----
+
+## ESP-IDF LED Blink Test on QEMU
+
+This section provides the complete sequence of commands and source code required to create, configure, build, and run the ESP-IDF LED Blink project entirely inside the ESP32 QEMU emulator. Terminal commands and source code are separated into proper code blocks to ensure safe usage and clean documentation.
+
+### Step 1: Initialize the ESP-IDF Environment
+
+Before creating any project, the ESP-IDF environment must be activated so that `idf.py`, the Xtensa toolchain, CMake, and Python dependencies are available.
+
+```bash
+cd ~/esp/esp-idf
+source export.sh
+```
+
+### Step 2: Create Project Folder and Generate Blink Template
+
+```bash
+cd ~/esp/projects
+idf.py create-project blink
+cd blink
+```
+### Step 3: Code the project
+
+ESDP-IDF has standard example codes as .c file for hello world and blink projects. So you can use that one or even code it separately.
+
+Open the .c file and code
+
+```bash
+/* Blink Example
+
+   This example code is in the Public Domain (or CC0 licensed, at your option.)
+
+   Unless required by applicable law or agreed to in writing, this
+   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+   CONDITIONS OF ANY KIND, either express or implied.
+*/
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "driver/gpio.h"
+#include "esp_log.h"
+#include "led_strip.h"
+#include "sdkconfig.h"
+
+static const char *TAG = "example";
+#define BLINK_GPIO CONFIG_BLINK_GPIO
+
+static uint8_t s_led_state = 0;
+
+#ifdef CONFIG_BLINK_LED_STRIP
+static led_strip_handle_t led_strip;
+
+static void blink_led(void)
+{
+    if (s_led_state) {
+        led_strip_set_pixel(led_strip, 0, 16, 16, 16);
+        led_strip_refresh(led_strip);
+    } else {
+        led_strip_clear(led_strip);
+    }
+}
+
+static void configure_led(void)
+{
+    ESP_LOGI(TAG, "Example configured to blink addressable LED!");
+    led_strip_config_t strip_config = {
+        .strip_gpio_num = BLINK_GPIO,
+        .max_leds = 1,
+    };
+#if CONFIG_BLINK_LED_STRIP_BACKEND_RMT
+    led_strip_rmt_config_t rmt_config = {
+        .resolution_hz = 10 * 1000 * 1000,
+        .flags.with_dma = false,
+    };
+    ESP_ERROR_CHECK(led_strip_new_rmt_device(&strip_config, &rmt_config, &led_strip));
+#elif CONFIG_BLINK_LED_STRIP_BACKEND_SPI
+    led_strip_spi_config_t spi_config = {
+        .spi_bus = SPI2_HOST,
+        .flags.with_dma = true,
+    };
+    ESP_ERROR_CHECK(led_strip_new_spi_device(&strip_config, &spi_config, &led_strip));
+#else
+#error "unsupported LED strip backend"
+#endif
+    led_strip_clear(led_strip);
+}
+
+#elif CONFIG_BLINK_LED_GPIO
+static void blink_led(void)
+{
+    gpio_set_level(BLINK_GPIO, s_led_state);
+}
+
+static void configure_led(void)
+{
+    ESP_LOGI(TAG, "Example configured to blink GPIO LED!");
+    gpio_reset_pin(BLINK_GPIO);
+    gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
+}
+#else
+#error "unsupported LED type"
+#endif
+
+void app_main(void)
+{
+    configure_led();
+
+    while (1) {
+        ESP_LOGI(TAG, "Turning the LED %s!", s_led_state == true ? "ON" : "OFF");
+        blink_led();
+        s_led_state = !s_led_state;
+        vTaskDelay(CONFIG_BLINK_PERIOD / portTICK_PERIOD_MS);
+    }
+}
+```
+### Step 4: Configure the Project and set the target
+
+Run the configuration menu:
+
+```bash
+idf.py menuconfig
+
+Inside menuconfig:
+
+Select LED GPIO pin
+Choose blink period
+Select LED type (GPIO or LED strip)
+Save and exit.
+
+//Then set the target explicitly:
+
+idf.py set-target esp32
+```
+### Step 5: Build the project and run on QEMU
+
+``bash
+idf.py build
+
+//Once this is done succesfully, run the project and view the output on IDF monitor
+
+idf.py qemu monitor
+``
+
+----
+
+## ESP32 QEMU Temperature Sensor Example – Complete Steps and Code
+
+
+### Step 1: Activate ESP-IDF Environment
+
+Before creating the temperature project, the ESP-IDF environment must be loaded:
+
+```bash
+cd ~/esp/esp-idf
+source export.sh
+```
+
+### Step 2: Create Project Directory and Generate Template
+
+A new project directory was created under esp/projects:
+
+``
+cd ~/esp/projects
+idf.py create-project temp_sensor
+cd temp_sensor
+
+``
+
+### Step 3: Add the Temperature Sensor Application Code
+
+ESP-IDF does not generate a temperature example automatically, so a custom file is created.
+
+Create or replace:
+
+main/temp_sensor_main.c
+
+with the following full code:
+
+```
+#include <stdio.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "esp_log.h"
+#include "sdkconfig.h"
+
+// Define a tag for logging output
+static const char *TAG = "TEMP_SENSOR_QEMU";
+
+// --- Mock Sensor Driver Function ---
+// In a real project, this function would handle I/O to a physical sensor.
+// In QEMU, we return a simulated, changing value.
+float mock_sensor_read_temp_celsius() {
+    static float current_temp = 20.0; // Start at 20.0 C
+    static int direction = 1;         // 1 for increasing, -1 for decreasing
+
+    // Simulate temperature change
+    current_temp += (0.1 * direction);
+
+    // Change direction if we hit a boundary
+    if (current_temp >= 30.0) {
+        direction = -1;
+    } else if (current_temp <= 20.0) {
+        direction = 1;
+    }
+
+    return current_temp;
+}
+
+// --- Main Application Task ---
+void temp_task(void *pvParameter) {
+    ESP_LOGI(TAG, "Temperature Reader Task Started.");
+
+    while (1) {
+        // 1. Read the simulated temperature
+        float temp_c = mock_sensor_read_temp_celsius();
+
+        // 2. Print the result using the logging system (visible in QEMU serial output)
+        ESP_LOGI(TAG, "Current Temperature: %.2f C", temp_c);
+
+        // 3. Wait for 2 seconds before the next reading (FreeRTOS delay)
+        vTaskDelay(pdMS_TO_TICKS(2000));
+    }
+}
+
+// --- ESP-IDF Application Entry Point ---
+void app_main(void) {
+    // Create the task that will handle the temperature reading
+    xTaskCreate(temp_task, "temp_reader", 2048, NULL, 5, NULL);
+}
+
+```
+---
+
+### Step 4: Configure Target
+
+Before building, select ESP32 as the target:
+```
+idf.py set-target esp32
+```
+
+### Step 5: Build and Run the Temperature Sensor Firmware
+
+Compile the project:
+
+``
+idf.py build
+
+//Run the Temperature Sensor Program in QEMU
+
+idf.py qemu monitor
+``
+
+On running, QEMU outputs a continuous simulated temperature feed:
+
+
+----
+
+# 8. 
 
 
 
