@@ -273,8 +273,7 @@ sudo apt install -y git wget flex bison gperf python3 python3-pip cmake ninja-bu
 
 ## 2. Error: Missing libgcrypt20-dev
 
-QEMU’s build system requires libgcrypt for cryptographic operations.
-During compilation, Ninja stopped with linker errors referring to missing gcrypt functions.
+QEMU’s build system requires libgcrypt for cryptographic operations. During compilation, Ninja stopped with linker errors referring to missing gcrypt functions.
 
 ### Why This Error Occurred
 
@@ -365,7 +364,7 @@ Since export.sh was not invoked, ESP-IDF could not find:
 -Python environment
 
 
-###Fix
+### Fix
 
 Always activate ESP-IDF:
 
@@ -374,7 +373,7 @@ Always activate ESP-IDF:
 cd ~/esp/esp-idf
 source export.sh
 
-Then run:
+//Then run:
 
 idf.py qemu monitor
 
