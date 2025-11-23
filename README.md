@@ -366,14 +366,12 @@ Since export.sh was not invoked, ESP-IDF could not find:
 Always activate ESP-IDF:
 
 ```
-
 cd ~/esp/esp-idf
 source export.sh
 
 //Then run:
 
 idf.py qemu monitor
-
 ```
 
 With these fixes, QEMU built successfully, ESP-IDF recognized the toolchain, and the ESP32 emulation environment worked flawlessly.
