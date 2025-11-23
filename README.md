@@ -412,12 +412,26 @@ idf.py set-target esp32
 #### Edit the hello_world.c file which was created
 
 ```bash
+#include <stdio.h>
+    #include "freertos/FreeRTOS.h"
+    #include "freertos/task.h"
+
+    void hello_task(void *pvParameter) {
+        while(1) {
+            printf("Hello, World!\\n");
+            vTaskDelay(pdMS_TO_TICKS(1000)); // Wait for 1 second
+        }
+    }
+
+    void app_main() {
+        xTaskCreate(&hello_task, "hello_task", 2048, NULL, 1, NULL);
+    }
 
 ```
 
 Then build the project using
 
-``bash
+```bash
 
 idf.py build
 
@@ -425,7 +439,7 @@ idf.py build
 
 idf.py qemu monitor
 
-``
+```
 ----
 
 ## ESP-IDF LED Blink Test on QEMU
