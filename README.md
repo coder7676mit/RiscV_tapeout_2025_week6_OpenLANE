@@ -284,11 +284,11 @@ Only the runtime library is installed, but QEMU needs the development headers.
 
 Install the required development package:
 
-``bash
+```
 
 sudo apt install -y libgcrypt20-dev
 
-``
+```
 After installing it, QEMU’s cryptographic modules compiled correctly. If there are any other packages that go missing or the terminal shows, just install it separately like this and it will fix the issue.
 
 ---
@@ -297,7 +297,7 @@ After installing it, QEMU’s cryptographic modules compiled correctly. If there
 
 When running:
 
-``bash
+```bash
 
 ninja -j$(nproc)
 
@@ -306,7 +306,7 @@ ninja -j$(nproc)
 fatal error: libslirp-version.h: No such file or directory
 undefined reference to `slirp_*`
 
-``
+```
 
 ### Why This Error Occurred
 
@@ -317,7 +317,7 @@ Ubuntu 24.04 includes an older slirp package that does not contain the header fi
 
 Build and install the latest libslirp manually:
 
-``bash
+```bash
 
 sudo apt install -y build-essential meson ninja-build pkg-config
 
@@ -336,7 +336,7 @@ ninja -j$(nproc)
 
 //completed without errors.
 
-``
+```
 ---
 
 ## 4. Error: "QEMU Xtensa Not Installed" / qemu-system-xtensa Not Found
