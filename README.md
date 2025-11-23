@@ -344,13 +344,11 @@ ninja -j$(nproc)
 Running ESP-IDF’s QEMU integration without activating the environment caused errors like:
 
 ```
-
 qemu-system-xtensa: command not found
 
 or
 
 xtensa-softmmu QEMU binary not found. Did you install QEMU?
-
 ```
 
 QEMU was built manually, so its binaries live inside. They are not automatically added to your PATH. Also, ESP-IDF requires you to activate its environment before it can detect the toolchain and qemu path.
