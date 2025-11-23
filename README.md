@@ -222,16 +222,18 @@ source export.sh
 idf.py --version
 
 xtensa-esp32-elf-gcc --version
+
 ```
 
 ## Verifying QEMU environment
+
 ``bash
 qemu-system-xtensa --version
-```
 
+``
 ---
 
-# Build & Setup Errors Encountered and How They Were Resolved
+# 6. Build & Setup Errors Encountered and How They Were Resolved
 
 During the ESP-IDF + QEMU setup, four major issues were encountered.  
 Each problem occurred due to missing dependencies, incorrect package names, or an incomplete environment setup.  
