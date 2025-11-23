@@ -277,6 +277,7 @@ idf.py build
 //Once this is done succesfully, run the project and view the output on IDF monitor
 
 idf.py qemu monitor
+
 ``
 ----
 
@@ -523,12 +524,13 @@ idf.py set-target esp32
 
 Compile the project:
 
-``
+``bash
 idf.py build
 
 //Run the Temperature Sensor Program in QEMU
 
 idf.py qemu monitor
+
 ``
 
 On running, QEMU outputs a continuous simulated temperature feed:
