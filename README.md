@@ -285,9 +285,7 @@ Only the runtime library is installed, but QEMU needs the development headers.
 Install the required development package:
 
 ```
-
 sudo apt install -y libgcrypt20-dev
-
 ```
 After installing it, QEMU’s cryptographic modules compiled correctly. If there are any other packages that go missing or the terminal shows, just install it separately like this and it will fix the issue.
 
@@ -313,7 +311,7 @@ undefined reference to `slirp_*`
 QEMU's user-mode networking depends on libslirp.
 Ubuntu 24.04 includes an older slirp package that does not contain the header files required for QEMU’s build. Since the headers were missing, QEMU could not compile its networking backend.
 
-###Fix
+### Fix
 
 Build and install the latest libslirp manually:
 
@@ -345,7 +343,7 @@ ninja -j$(nproc)
 
 Running ESP-IDF’s QEMU integration without activating the environment caused errors like:
 
-``bash
+```
 
 qemu-system-xtensa: command not found
 
@@ -353,7 +351,7 @@ or
 
 xtensa-softmmu QEMU binary not found. Did you install QEMU?
 
-``
+```
 
 QEMU was built manually, so its binaries live inside. They are not automatically added to your PATH. Also, ESP-IDF requires you to activate its environment before it can detect the toolchain and qemu path.
 
@@ -363,12 +361,11 @@ Since export.sh was not invoked, ESP-IDF could not find:
 -QEMU binary
 -Python environment
 
-
 ### Fix
 
 Always activate ESP-IDF:
 
-``bash
+```
 
 cd ~/esp/esp-idf
 source export.sh
@@ -377,7 +374,7 @@ source export.sh
 
 idf.py qemu monitor
 
-``
+```
 
 With these fixes, QEMU built successfully, ESP-IDF recognized the toolchain, and the ESP32 emulation environment worked flawlessly.
 
