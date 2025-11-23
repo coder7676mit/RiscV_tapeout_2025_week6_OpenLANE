@@ -60,16 +60,16 @@ The objective is to set up a complete emulation environment for ESP32 microcontr
 
 ## 3 ESP-IDF and QEMU Fundamentals
 
-### 3.1 Overview of ESP-IDF
+## 3.1 Overview of ESP-IDF
 
 The ESP-IDF (Espressif IoT Development Framework) is the official software development kit for ESP32-series microcontrollers. It provides the full stack required to build embedded applications, including the FreeRTOS kernel, peripheral drivers, Wi-Fi and Bluetooth stacks, OTA support, flash memory handling, build scripts, Python-based tooling, and a complete project structure. ESP-IDF abstracts complex hardware features so that developers can focus on application logic while still having low-level access whenever needed. 
 ESP-IDF includes a build system based on CMake and Python, with integrated configuration tools, device-specific compilers, linker scripts, and IDF-monitor utilities. The framework provides APIs for GPIO, ADC, timers, UART, SPI, I2C, PWM, tasks, queues, and other RTOS features. It also contains example projects for LEDs, sensors, networking, and peripheral testing. These components form the foundation for building and running ESP32 firmware both on real hardware and in an emulation environment such as QEMU.
 
-### 3.2 Overview of QEMU and ESP32 Emulation
+## 3.2 Overview of QEMU and ESP32 Emulation
 
 QEMU is a machine emulator capable of running full system images for various CPU architectures through dynamic binary translation. Espressif maintains a customized fork of QEMU that supports the Xtensa instruction set used by ESP32 chips. This modified version emulates flash memory, interrupts, peripherals, memory-mapped I/O, timers, and general CPU behavior. Building QEMU for ESP32 enables firmware execution without a physical development board, making it useful for continuous integration, automated testing, and code evaluation systems.
 
-### 3.4 Yaksh Platform Requirements and Prerequisite Checks
+## 3.4 Yaksh Platform Requirements and Prerequisite Checks
 
 Yaksh is an automated evaluation platform used in academic institutions for programming and system-level assignments. To support ESP32-based experiments, Yaksh requires a complete toolchain that can compile programs and run them in an emulator.
 
@@ -83,9 +83,9 @@ A working build of QEMU with Xtensa support
 
 All prerequisite checks must be completed before installation to prevent failures during the ESP-IDF or QEMU setup stages.
 
-## 4. 
+# 4. 
 
-### System Dependency Installation
+## 4.1 System Dependency Installation
 
 A complete ESP32 emulation workflow depends on several foundational system packages. These include compiler toolchains, Python runtimes, USB communication libraries, and build utilities required by ESP-IDF and QEMU. Ensuring that these dependencies are correctly installed is the first preparation step before configuring ESP-IDF or compiling QEMU.
 
@@ -98,7 +98,7 @@ sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv 
 ```
 This command installs Python 3, pip, venv, CMake, Ninja, cryptographic libraries, USB libraries, and other tools essential for the ESP32 development environment. Some packages needed for QEMU compilation were still missing.
 
-### 4.2 Updating Package Index and Installing Additional Dependencies
+## 4.2 Updating Package Index and Installing Additional Dependencies
 
 Before installing the remaining packages, the system package index must be updated to ensure all installations use the latest repository metadata. This avoids version conflicts, unavailable packages, or outdated dependency chains during ESP-IDF and QEMU setup.
 
@@ -119,7 +119,7 @@ cd ~/esp
 git clone --recursive https://github.com/espressif/esp-idf.git
 ```
 
-### Installing ESP-IDF Tools for ESP32
+## 4.3 Installing ESP-IDF Tools for ESP32
 
 After cloning the ESP-IDF repository, the next step is to install all required toolchains, Python packages, and build utilities specific to the ESP32 target. ESP-IDF provides an automated installation script that configures the environment and downloads all dependencies.
 
@@ -138,7 +138,7 @@ cd ~/esp/esp-idf
 source export.sh
 ```
 
-### Cloning the Espressif QEMU Repository
+## 4.4 Cloning the Espressif QEMU Repository
 
 With ESP-IDF configured, the next major step is to obtain the ESP32-supported QEMU emulator. Espressif maintains a custom fork of QEMU that includes Xtensa CPU support and ESP32 peripheral emulation. This fork is required because the upstream QEMU does not fully support ESP32 hardware components.
 
@@ -161,7 +161,7 @@ The following commands were executed:
 cd ~/qemu
 ./configure --target-list=xtensa-softmmu
 ```
-### Building QEMU and Fixing libslirp Errors
+## 4.5 Building QEMU and Fixing libslirp Errors
 
 Once the configuration step finished, the next stage was compiling QEMU using Ninja. The standard build command was executed:
 
@@ -195,7 +195,7 @@ cd ~
 git clone https://gitlab.freedesktop.org/slirp/libslirp.git
 ```
 
-### Then configure xtensa-softmmu and build qemu
+## 4.6 Then configure xtensa-softmmu and build qemu
 
 ```bash
 cd ~/qemu
@@ -228,6 +228,7 @@ xtensa-esp32-elf-gcc --version
 ## Verifying QEMU environment
 
 ``bash
+
 qemu-system-xtensa --version
 
 ``
@@ -245,6 +246,7 @@ Each problem occurred due to missing dependencies, incorrect package names, or a
 While installing required dependencies, the following command was attempted:
 
 ```bash
+
 sudo apt -y update && sudo apt install git wget flex bison gperf python3 cmake ninja-build ccache dfu-util libusbx
 
 ```
@@ -284,6 +286,7 @@ Only the runtime library is installed, but QEMU needs the development headers.
 Install the required development package:
 
 ``bash
+
 sudo apt install -y libgcrypt20-dev
 
 ``
@@ -296,6 +299,7 @@ After installing it, QEMU’s cryptographic modules compiled correctly. If there
 When running:
 
 ``bash
+
 ninja -j$(nproc)
 
 //Compilation failed with errors like:
@@ -315,6 +319,7 @@ Ubuntu 24.04 includes an older slirp package that does not contain the header fi
 Build and install the latest libslirp manually:
 
 ``bash
+
 sudo apt install -y build-essential meson ninja-build pkg-config
 
 cd ~
@@ -342,6 +347,7 @@ ninja -j$(nproc)
 Running ESP-IDF’s QEMU integration without activating the environment caused errors like:
 
 ``bash
+
 qemu-system-xtensa: command not found
 
 or
@@ -364,6 +370,7 @@ Since export.sh was not invoked, ESP-IDF could not find:
 Always activate ESP-IDF:
 
 ``bash
+
 cd ~/esp/esp-idf
 source export.sh
 
@@ -388,6 +395,7 @@ Before creating or building any ESP-IDF project, the ESP-IDF environment must be
 To initialize the environment, the following command was executed from inside the ESP-IDF installation directory:
 
 ```bash
+
 cd ~/esp/esp-idf
 source export.sh
 ```
@@ -399,6 +407,7 @@ After initializing the ESP-IDF environment, a dedicated directory was prepared t
 The following commands were executed:
 
 ```bash
+
 cd ~/esp/projects
 mkdir hello
 idf.py create-project hello_world
@@ -417,6 +426,7 @@ idf.py set-target esp32
 Then build the project using
 
 ``bash
+
 idf.py build
 
 //Once this is done succesfully, run the project and view the output on IDF monitor
@@ -435,16 +445,20 @@ This section provides the complete sequence of commands and source code required
 Before creating any project, the ESP-IDF environment must be activated so that `idf.py`, the Xtensa toolchain, CMake, and Python dependencies are available.
 
 ```bash
+
 cd ~/esp/esp-idf
 source export.sh
+
 ```
 
 ### Step 2: Create Project Folder and Generate Blink Template
 
 ```bash
+
 cd ~/esp/projects
 idf.py create-project blink
 cd blink
+
 ```
 ### Step 3: Code the project
 
@@ -453,6 +467,7 @@ ESDP-IDF has standard example codes as .c file for hello world and blink project
 Open the .c file and code
 
 ```bash
+
 /* Blink Example
 
    This example code is in the Public Domain (or CC0 licensed, at your option.)
@@ -539,12 +554,14 @@ void app_main(void)
         vTaskDelay(CONFIG_BLINK_PERIOD / portTICK_PERIOD_MS);
     }
 }
+
 ```
 ### Step 4: Configure the Project and set the target
 
 Run the configuration menu:
 
 ```bash
+
 idf.py menuconfig
 
 Inside menuconfig:
@@ -557,17 +574,20 @@ Save and exit.
 //Then set the target explicitly:
 
 idf.py set-target esp32
+
 ```
+
 ### Step 5: Build the project and run on QEMU
 
 ``bash
+
 idf.py build
 
 //Once this is done succesfully, run the project and view the output on IDF monitor
 
 idf.py qemu monitor
-``
 
+``
 ----
 
 ## ESP32 QEMU Temperature Sensor Example – Complete Steps and Code
@@ -578,8 +598,10 @@ idf.py qemu monitor
 Before creating the temperature project, the ESP-IDF environment must be loaded:
 
 ```bash
+
 cd ~/esp/esp-idf
 source export.sh
+
 ```
 
 ### Step 2: Create Project Directory and Generate Template
@@ -604,6 +626,7 @@ main/temp_sensor_main.c
 with the following full code:
 
 ```
+
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -661,8 +684,10 @@ void app_main(void) {
 ### Step 4: Configure Target
 
 Before building, select ESP32 as the target:
+
 ```
 idf.py set-target esp32
+
 ```
 
 ### Step 5: Build and Run the Temperature Sensor Firmware
@@ -670,6 +695,7 @@ idf.py set-target esp32
 Compile the project:
 
 ``bash
+
 idf.py build
 
 //Run the Temperature Sensor Program in QEMU
