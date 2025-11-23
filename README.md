@@ -52,9 +52,9 @@
 The work described in this document adopts that same philosophy. It focuses on constructing a fully open and inspectable environment to emulate ESP32 microcontrollers using QEMU and ESP-IDF. By building QEMU from source and integrating it with an ESP32-ready firmware toolchain, the environment supports development, debugging, automated code evaluation through platforms like Yaksh, and experimentation without requiring physical hardware.
 
 
-## 2 Problem Statement
+# 2 Problem Statement
 
-### 2.1 Objective
+## 2.1 Objective
 
 The objective is to set up a complete emulation environment for ESP32 microcontrollers using QEMU and the ESP-IDF toolchain. The environment must be fully functional, capable of compiling, flashing, and executing ESP32 programs entirely in software. It should support demonstration programs such as an LED blink example and a basic temperature sensor simulation executed inside QEMU.The scope includes installing ESP-IDF, fetching all required tools, building QEMU with Xtensa support, resolving compilation errors, and ensuring successful execution of emulated firmware. The environment must also integrate with the Yaksh evaluation platform so that ESP32 assignments can be evaluated automatically through the emulator without requiring physical boards. The final setup should be reliable enough to support education, programming labs, and experiment-driven learning.
 
